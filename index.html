@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Akshita Abrol, PhD — Applied AI Researcher</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --navy: #050B18;
+    --navy-mid: #0D1B30;
+    --slate: #1A2640;
+    --cyan: #00E5FF;
+    --teal: #0AFFB2;
+    --white: #F0F4FF;
+    --muted: #7A90B0;
+    --card-bg: rgba(26,38,64,0.6);
+    --glow-cyan: 0 0 24px rgba(0,229,255,0.25);
+    --glow-teal: 0 0 24px rgba(10,255,178,0.25);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--navy); color: var(--white); font-family: 'Inter', sans-serif; font-size: 16px; line-height: 1.7; overflow-x: hidden; }
+
+  /* NAV */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1rem 3rem; background: rgba(5,11,24,0.88); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(0,229,255,0.08); }
+  .nav-logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.1rem; color: var(--cyan); letter-spacing: 0.04em; }
+  .nav-logo span { color: var(--white); }
+  nav ul { list-style: none; display: flex; gap: 2rem; }
+  nav ul a { text-decoration: none; color: var(--muted); font-size: 0.82rem; font-family: 'Space Mono', monospace; letter-spacing: 0.05em; transition: color 0.2s; }
+  nav ul a:hover { color: var(--cyan); }
+
+  /* HERO */
+  #hero { min-height: 100vh; display: flex; align-items: center; padding: 7rem 3rem 4rem; position: relative; overflow: hidden; }
+  #hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 50% at 70% 50%, rgba(0,229,255,0.04) 0%, transparent 70%); pointer-events: none; }
+  .hero-inner { max-width: 1200px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .hero-left { display: flex; flex-direction: column; gap: 0; }
+  .hero-eyebrow { font-family: 'Space Mono', monospace; font-size: 0.72rem; letter-spacing: 0.2em; color: var(--teal); margin-bottom: 1rem; text-transform: uppercase; }
+  h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(2.2rem, 3.5vw, 3.4rem); font-weight: 700; line-height: 1.08; margin-bottom: 0.5rem; }
+  h1 .accent { color: var(--cyan); }
+  .hero-title { color: var(--muted); font-size: 1rem; margin-bottom: 1.4rem; font-weight: 400; font-family: 'Space Mono', monospace; letter-spacing: 0.03em; font-size: 0.82rem; }
+  .hero-desc { color: rgba(240,244,255,0.72); font-size: 0.95rem; margin-bottom: 1.8rem; line-height: 1.85; }
+  .hero-stats { display: flex; gap: 1.6rem; margin-bottom: 2rem; }
+  .stat-item { text-align: center; }
+  .stat-num { font-family: 'Space Grotesk', sans-serif; font-size: 1.7rem; font-weight: 700; color: var(--cyan); display: block; }
+  .stat-label { font-size: 0.68rem; color: var(--muted); letter-spacing: 0.05em; font-family: 'Space Mono', monospace; }
+  .hero-links { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.6rem 1.3rem; border-radius: 4px; font-family: 'Space Mono', monospace; font-size: 0.78rem; letter-spacing: 0.04em; text-decoration: none; transition: all 0.22s; cursor: pointer; border: none; }
+  .btn-primary { background: var(--cyan); color: var(--navy); font-weight: 700; }
+  .btn-primary:hover { background: var(--teal); box-shadow: var(--glow-teal); }
+  .btn-outline { background: transparent; color: var(--cyan); border: 1px solid rgba(0,229,255,0.5); }
+  .btn-outline:hover { background: rgba(0,229,255,0.07); box-shadow: var(--glow-cyan); border-color: var(--cyan); }
+
+  /* HERO RIGHT — photo + pipeline */
+  .hero-right { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  
+  
+  
+   }
+  
+  .pipeline-wrap { width: 100%; }
+  canvas#pipeCanvas { display: block; width: 100%; border-radius: 10px; border: 1px solid rgba(0,229,255,0.12); background: var(--navy-mid); box-shadow: var(--glow-cyan); }
+  .canvas-label { text-align: center; margin-top: 0.5rem; font-family: 'Space Mono', monospace; font-size: 0.62rem; color: var(--muted); letter-spacing: 0.12em; }
+
+  /* SECTIONS */
+  section { padding: 6rem 3rem; }
+  .section-inner { max-width: 1200px; margin: 0 auto; }
+  .section-label { font-family: 'Space Mono', monospace; font-size: 0.68rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--teal); margin-bottom: 0.5rem; }
+  h2 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.7rem, 2.8vw, 2.3rem); font-weight: 700; margin-bottom: 0.4rem; }
+  .divider { width: 44px; height: 2px; background: linear-gradient(90deg, var(--cyan), var(--teal)); margin: 1rem 0 2.8rem; }
+
+  /* ABOUT */
+  #about { background: var(--navy-mid); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .about-text p { color: rgba(240,244,255,0.78); margin-bottom: 1.1rem; line-height: 1.85; font-size: 0.95rem; }
+  .tag-cloud { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 1.4rem; }
+  .tag { padding: 0.28rem 0.7rem; border: 1px solid rgba(0,229,255,0.22); border-radius: 20px; font-size: 0.73rem; font-family: 'Space Mono', monospace; color: var(--cyan); background: rgba(0,229,255,0.04); }
+  .about-aside { display: flex; flex-direction: column; gap: 1.2rem; }
+  .info-card { background: var(--card-bg); border: 1px solid rgba(0,229,255,0.1); border-radius: 8px; padding: 1.3rem 1.5rem; backdrop-filter: blur(8px); }
+  .info-card h4 { font-family: 'Space Grotesk', sans-serif; font-size: 0.75rem; color: var(--teal); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.7rem; }
+  .info-card p, .info-card a { font-size: 0.88rem; color: rgba(240,244,255,0.72); text-decoration: none; display: block; margin-bottom: 0.25rem; }
+  .info-card a:hover { color: var(--cyan); }
+
+  /* PROJECTS */
+  #projects { background: var(--navy); }
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 1.4rem; }
+  .project-card { background: var(--card-bg); border: 1px solid rgba(0,229,255,0.08); border-radius: 10px; padding: 1.7rem; backdrop-filter: blur(8px); transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s; position: relative; overflow: hidden; }
+  .project-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--cyan), var(--teal)); opacity: 0; transition: opacity 0.3s; }
+  .project-card:hover { border-color: rgba(0,229,255,0.3); box-shadow: var(--glow-cyan); transform: translateY(-4px); }
+  .project-card:hover::before { opacity: 1; }
+  .project-domain { font-family: 'Space Mono', monospace; font-size: 0.63rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin-bottom: 0.7rem; }
+  .project-card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.05rem; font-weight: 600; margin-bottom: 0.7rem; }
+  .project-card p { font-size: 0.88rem; color: rgba(240,244,255,0.68); margin-bottom: 1.1rem; line-height: 1.75; }
+  .project-outcomes { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1rem; }
+  .outcome-tag { font-size: 0.68rem; padding: 0.18rem 0.55rem; background: rgba(10,255,178,0.07); border: 1px solid rgba(10,255,178,0.18); border-radius: 3px; color: var(--teal); font-family: 'Space Mono', monospace; }
+  .project-partner { font-size: 0.76rem; color: var(--muted); }
+  .project-partner strong { color: var(--white); }
+
+  /* PUBLICATIONS */
+  #publications { background: var(--navy-mid); }
+  .pub-list { display: flex; flex-direction: column; gap: 1rem; }
+  .pub-item { display: grid; grid-template-columns: 44px 1fr; gap: 1.1rem; align-items: start; padding: 1.3rem; background: var(--card-bg); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; transition: border-color 0.2s; }
+  .pub-item:hover { border-color: rgba(0,229,255,0.18); }
+  .pub-year { font-family: 'Space Mono', monospace; font-size: 0.72rem; color: var(--cyan); padding-top: 2px; }
+  .pub-title { font-size: 0.92rem; font-weight: 500; margin-bottom: 0.25rem; }
+  .pub-venue { font-size: 0.8rem; color: var(--muted); }
+  .pub-award { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.7rem; color: #FFD166; margin-top: 0.25rem; }
+
+  /* TIMELINE */
+  #experience { background: var(--navy); }
+  .timeline { position: relative; padding-left: 2rem; }
+  .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 1px; background: linear-gradient(180deg, var(--cyan), var(--teal), transparent); }
+  .tl-item { position: relative; padding-bottom: 2.6rem; padding-left: 1.8rem; }
+  .tl-dot { position: absolute; left: -2.38rem; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--cyan); border: 2px solid var(--navy); box-shadow: 0 0 10px rgba(0,229,255,0.5); }
+  .tl-date { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--teal); margin-bottom: 0.25rem; }
+  .tl-role { font-family: 'Space Grotesk', sans-serif; font-size: 1.02rem; font-weight: 600; margin-bottom: 0.1rem; }
+  .tl-org { font-size: 0.86rem; color: var(--muted); margin-bottom: 0.55rem; }
+  .tl-desc { font-size: 0.86rem; color: rgba(240,244,255,0.65); line-height: 1.78; }
+
+  /* AWARDS */
+  #awards { background: var(--navy-mid); }
+  .awards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.1rem; }
+  .award-card { padding: 1.3rem; background: var(--card-bg); border: 1px solid rgba(255,215,0,0.12); border-radius: 8px; transition: box-shadow 0.3s; }
+  .award-card:hover { box-shadow: 0 0 20px rgba(255,215,0,0.08); }
+  .award-year { font-family: 'Space Mono', monospace; font-size: 0.68rem; color: #FFD166; margin-bottom: 0.35rem; }
+  .award-title { font-size: 0.92rem; font-weight: 600; margin-bottom: 0.25rem; }
+  .award-body { font-size: 0.8rem; color: var(--muted); }
+
+  /* CONTACT */
+  #contact { background: var(--navy); text-align: center; }
+  .contact-inner { max-width: 600px; margin: 0 auto; }
+  .contact-tagline { font-size: 1rem; color: rgba(240,244,255,0.72); margin-bottom: 2.4rem; }
+  .contact-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.8rem; margin-bottom: 2.5rem; }
+  .contact-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.65rem 1.1rem; background: var(--card-bg); border: 1px solid rgba(0,229,255,0.13); border-radius: 6px; font-size: 0.82rem; color: var(--white); text-decoration: none; transition: border-color 0.2s, box-shadow 0.2s; }
+  .contact-item:hover { border-color: var(--cyan); box-shadow: var(--glow-cyan); }
+  .contact-item .ic { color: var(--cyan); }
+
+  footer { text-align: center; padding: 2rem; border-top: 1px solid rgba(255,255,255,0.04); font-family: 'Space Mono', monospace; font-size: 0.68rem; color: var(--muted); letter-spacing: 0.04em; }
+
+  .reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 768px) {
+    nav { padding: 0.9rem 1.2rem; }
+    nav ul { gap: 0.9rem; }
+    section { padding: 4rem 1.2rem; }
+    #hero { padding: 6rem 1.2rem 3rem; }
+    .hero-inner, .about-grid { grid-template-columns: 1fr; }
+    .hero-right { margin-top: 2.5rem; }
+    .hero-stats { gap: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">AA<span>.phd</span></div>
+  <ul>
+    <li><a href="#about">Research</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#publications">Publications</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-eyebrow">// Applied AI Researcher · Singapore</div>
+      <h1>Akshita <span class="accent">Abrol</span>, PhD</h1>
+      <p class="hero-title">Multimodal AI · Clinical Intelligence · Next-Gen Networks</p>
+      <p class="hero-desc">Building AI systems that work reliably in real, high-throughput clinical and educational environments — from speech biomarkers for neurological assessment to federated learning for privacy-preserving diagnostics.</p>
+      <div class="hero-stats">
+        <div class="stat-item"><span class="stat-num">315+</span><span class="stat-label">Citations</span></div>
+        <div class="stat-item"><span class="stat-num">h=4</span><span class="stat-label">h-Index</span></div>
+        <div class="stat-item"><span class="stat-num">19</span><span class="stat-label">Papers</span></div>
+        <div class="stat-item"><span class="stat-num">2</span><span class="stat-label">Best Paper Awards</span></div>
+      </div>
+      <div class="hero-links">
+        <a href="mailto:akshita.abrol@singaporetech.edu.sg" class="btn btn-primary">Get in Touch</a>
+        <a href="https://scholar.google.com/citations?user=pGAcvDwAAAAJ" target="_blank" class="btn btn-outline">Google Scholar ↗</a>
+        <a href="https://www.linkedin.com/in/dr-akshita-abrol-7ba8ba206/" target="_blank" class="btn btn-outline">LinkedIn ↗</a>
+        <a href="YOUR_CV_PDF_LINK_HERE" download class="btn btn-outline" title="Replace YOUR_CV_PDF_LINK_HERE with your actual CV PDF URL">Download CV ↓</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="pipeline-wrap">
+        <canvas id="pipeCanvas" width="460" height="200"></canvas>
+        <p class="canvas-label">// MULTIMODAL AI PIPELINE · CLINICAL INTELLIGENCE</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="section-inner">
+    <div class="section-label">// 01 · Research Focus</div>
+    <h2>AI-Native Clinical Intelligence</h2>
+    <div class="divider"></div>
+    <div class="about-grid reveal">
+      <div class="about-text">
+        <p>My research sits at the intersection of signal processing and multimodal AI, applied to clinical and biomedical problems. I design systems that can reliably interpret speech, vision, and network data in real-world, high-throughput settings — not just in controlled lab conditions.</p>
+        <p>My doctoral work produced the first Hindi-language schizophrenic and emotional speech corpus, alongside CNN- and fractal-based classification methods that earned two international best paper awards. This has since expanded into a broader programme in multimodal AI, GenAI-powered clinical automation validated with hospital partners, and privacy-preserving federated learning for neurological diagnostics.</p>
+        <p>As a faculty member, I aim to build a research group training students to design AI systems at the systems level — robust, explainable, and ready for deployment in healthcare and education.</p>
+        <div class="tag-cloud">
+          <span class="tag">Multimodal AI</span><span class="tag">Speech Biomarkers</span><span class="tag">Federated Learning</span><span class="tag">Clinical NLP</span><span class="tag">5G/6G Networks</span><span class="tag">GenAI</span><span class="tag">Signal Processing</span><span class="tag">Deep Learning</span><span class="tag">Graph Neural Networks</span><span class="tag">Healthcare AI</span><span class="tag">Edge Intelligence</span>
+        </div>
+      </div>
+      <div class="about-aside">
+        <div class="info-card">
+          <h4>Current Position</h4>
+          <p>Post-Doctoral Research Fellow</p>
+          <p>SIT × NVIDIA AI Centre (SNAIC)</p>
+          <p>Singapore Institute of Technology</p>
+        </div>
+        <div class="info-card">
+          <h4>Education</h4>
+          <p>PhD, Electronics (Speech AI) — University of Jammu, 2022</p>
+          <p>M.Tech, ECE (CGPA 8.89) — SMVDU, 2016</p>
+          <p>B.E., ECE — GCET, 2013</p>
+        </div>
+        <div class="info-card">
+          <h4>Links</h4>
+          <a href="mailto:akshita.abrol@singaporetech.edu.sg">✉ akshita.abrol@singaporetech.edu.sg</a>
+          <a href="mailto:akshita.abrol30@gmail.com">✉ akshita.abrol30@gmail.com</a>
+          <a href="https://scholar.google.com/citations?user=pGAcvDwAAAAJ" target="_blank">↗ Google Scholar</a>
+          <a href="https://www.linkedin.com/in/dr-akshita-abrol-7ba8ba206/" target="_blank">↗ LinkedIn</a>
+          <a href="tel:+6586723185">📞 +65-8672 3185</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="section-inner">
+    <div class="section-label">// 02 · Featured Projects</div>
+    <h2>Research & Industry Projects</h2>
+    <div class="divider"></div>
+    <div class="projects-grid">
+      <div class="project-card reveal">
+        <div class="project-domain">Clinical AI · Computer Vision</div>
+        <h3>AutoVA — Automated Visual Acuity Testing</h3>
+        <p>AI-powered visual acuity assessment developed with Tan Tock Seng Hospital. Integrates robust audio-visual speech recognition for automated, clinician-grade eye testing in noisy clinical environments — removing reliance on manual charting.</p>
+        <div class="project-outcomes"><span class="outcome-tag">Pilot Deployed · TTSH</span><span class="outcome-tag">APSIPA ASC 2025</span><span class="outcome-tag">IALP 2025</span></div>
+        <p class="project-partner">Partner: <strong>Tan Tock Seng Hospital, Singapore</strong></p>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-domain">Federated Learning · Neurological AI</div>
+        <h3>Parkinson's Disease Federated Learning AI</h3>
+        <p>Privacy-preserving, explainable AI framework for Parkinson's Disease diagnosis using federated learning on MRI data across distributed clinical sites. Addresses data-sharing barriers in healthcare AI while maintaining diagnostic accuracy and model transparency.</p>
+        <div class="project-outcomes"><span class="outcome-tag">ACM MM I2M Workshop 2025</span><span class="outcome-tag">APSIPA ASC 2026 (submitted)</span></div>
+        <p class="project-partner">Institution: <strong>SIT × NVIDIA AI Centre (SNAIC)</strong></p>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-domain">Speech AI · Psychiatric Assessment</div>
+        <h3>Schizophrenic Speech Corpus & Classification</h3>
+        <p>Created the first Hindi-language schizophrenic and emotional speech corpus. Developed CNN, GMM, and fractal analysis methods for automated schizophrenia classification from speech, enabling non-invasive, scalable mental health screening.</p>
+        <div class="project-outcomes"><span class="outcome-tag">Sydney R. Parker Best Paper 2021</span><span class="outcome-tag">M.N.S. Swamy Best Paper 2021</span><span class="outcome-tag">CSSP, Springer</span></div>
+        <p class="project-partner">Venue: <strong>Circuits, Systems & Signal Processing, Springer</strong></p>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-domain">EdTech AI · LLM Applications</div>
+        <h3>ForumAId — GenAI for Academic LMS</h3>
+        <p>GenAI-powered tool integrated into Learning Management Systems to enhance student–instructor interaction. Reduces instructor load on repetitive queries while surfacing meaningful student engagement signals, validated in live SIT deployment.</p>
+        <div class="project-outcomes"><span class="outcome-tag">Applied Learning Conf. 2025</span><span class="outcome-tag">Deployed · SIT</span></div>
+        <p class="project-partner">Partner: <strong>SIT (STLA), Singapore</strong></p>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-domain">5G/6G · Congestion Control</div>
+        <h3>AI-Assisted Traffic Routing & BBR for 6G</h3>
+        <p>GNN-based Deep Reinforcement Learning for adaptive traffic routing in next-generation networks. Incorporates edge intelligence principles for low-latency inference at network endpoints. Re-engineered BBR congestion control (FaiRTT) for 5G-Advanced/6G environments. Accompanied by a comprehensive survey in ACM Computing Surveys 2026.</p>
+        <div class="project-outcomes"><span class="outcome-tag">IEEE ICC 2024</span><span class="outcome-tag">ACM CSUR 2026</span><span class="outcome-tag">IEEE ICC Workshops 2024</span></div>
+        <p class="project-partner">Institution: <strong>SIT ICT Cluster</strong></p>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-domain">Healthcare AI · Conversational AI</div>
+        <h3>AI Debate Agent</h3>
+        <p>Conversational AI agent supporting structured clinical debate and reasoning, developed with the Centre for Healthcare Innovation. Deployed at CHI Innovate 2025, demonstrating AI-augmented deliberation for complex healthcare decision-making scenarios.</p>
+        <div class="project-outcomes"><span class="outcome-tag">Deployed · CHI Innovate 2025</span></div>
+        <p class="project-partner">Partner: <strong>Centre for Healthcare Innovation, Singapore</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="publications">
+  <div class="section-inner">
+    <div class="section-label">// 03 · Selected Publications</div>
+    <h2>Research Output</h2>
+    <div class="divider"></div>
+    <div class="pub-list reveal">
+      <div class="pub-item">
+        <div class="pub-year">2026</div>
+        <div><div class="pub-title">BBR Congestion Control Algorithms: Evolution, Challenges and Future Directions</div><div class="pub-venue">ACM Computing Surveys (CSUR), Vol. 58, No. 9 · DOI: 10.1145/3793537</div></div>
+      </div>
+      <div class="pub-item">
+        <div class="pub-year">2025</div>
+        <div><div class="pub-title">Robust Audio-Visual Speech Recognition in Noisy Clinical Environments</div><div class="pub-venue">APSIPA ASC 2025</div></div>
+      </div>
+      <div class="pub-item">
+        <div class="pub-year">2025</div>
+        <div><div class="pub-title">Robust Speech Recognition for Visual Acuity Testing in Multi-Speaker Clinical Environments</div><div class="pub-venue">IALP 2025, pp. 266–271</div></div>
+      </div>
+      <div class="pub-item">
+        <div class="pub-year">2025</div>
+        <div><div class="pub-title">ForumAId: Enhancing Student–Teacher Interaction through GenAI in LMS Environments</div><div class="pub-venue">Applied Learning Conference 2025</div></div>
+      </div>
+      <div class="pub-item">
+        <div class="pub-year">2024</div>
+        <div><div class="pub-title">A Deep Reinforcement Learning Approach for Adaptive Traffic Routing in Next-Gen Networks</div><div class="pub-venue">IEEE ICC 2024, pp. 465–471</div></div>
+      </div>
+      <div class="pub-item">
+        <div class="pub-year">2024</div>
+        <div><div class="pub-title">FaiRTT: An Empirical Approach for Enhanced RTT Fairness and Bottleneck Throughput in BBR</div><div class="pub-venue">IEEE ICC Workshops 2024</div></div>
+      </div>
+      <div class="pub-item">
+        <div class="pub-year">2021</div>
+        <div>
+          <div class="pub-title">Fractal-based speech analysis for emotional content estimation</div>
+          <div class="pub-venue">Circuits, Systems, and Signal Processing, Springer</div>
+          <div class="pub-award">🏆 Sydney R. Parker Best Paper Award 2021 &nbsp;·&nbsp; 🏆 M.N.S. Swamy Best Paper Award 2021</div>
+        </div>
+      </div>
+      <div class="pub-item">
+        <div class="pub-year">2016</div>
+        <div><div class="pub-title">Power optimization in 5G networks: A step towards GrEEn communication</div><div class="pub-venue">IEEE Access, Vol. 4, pp. 1355–1374</div></div>
+      </div>
+    </div>
+    <div style="margin-top:1.8rem;">
+      <a href="https://scholar.google.com/citations?user=pGAcvDwAAAAJ" target="_blank" class="btn btn-outline">View All on Google Scholar ↗</a>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="section-inner">
+    <div class="section-label">// 04 · Academic Journey</div>
+    <h2>Experience & Appointments</h2>
+    <div class="divider"></div>
+    <div class="timeline reveal">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">Aug 2024 – Present</div>
+        <div class="tl-role">Post-Doctoral Research Fellow</div>
+        <div class="tl-org">SIT × NVIDIA AI Centre (SNAIC), Singapore Institute of Technology</div>
+        <div class="tl-desc">Lead investigator on translational AI projects including AutoVA, AI Debate Agent, Parkinson's FL, ForumAId, and Food-to-Nutrition GenAI. Hands-on development on NVIDIA DGX H200 GPU infrastructure. Led IMDA-funded AI Training Programme proposal (awarded). Architected SNAIC's applied AI research infrastructure.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">May 2023 – Nov 2024</div>
+        <div class="tl-role">Post-Doctoral Research Fellow — AI & Next-Gen Networks</div>
+        <div class="tl-org">ICT Cluster, Singapore Institute of Technology</div>
+        <div class="tl-desc">Conceptualised GNN-based Deep RL for adaptive traffic routing (IEEE ICC 2024). Re-engineered BBR congestion control for 5G-Advanced/6G environments (FaiRTT). Authored ACM Computing Surveys 2026 survey on BBR. Mentored SIT undergraduate and capstone students.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">Mar 2018 – Nov 2022</div>
+        <div class="tl-role">Senior Research Fellow (UGC Fellowship)</div>
+        <div class="tl-org">Department of Electronics, University of Jammu</div>
+        <div class="tl-desc">Developed CNN-based spectrographic analysis for schizophrenic speech classification. Created the first Hindi-language schizophrenic and emotional speech corpus. Awarded two international best paper awards (2021). Supervised graduate research; taught signal processing.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">Aug 2016 – Jun 2017</div>
+        <div class="tl-role">Lecturer</div>
+        <div class="tl-org">Dept. of ECE, GCET, University of Jammu</div>
+        <div class="tl-desc">Delivered undergraduate courses in C++ and MATLAB. Supervised student projects; organised technical conferences.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">Aug 2014 – May 2016</div>
+        <div class="tl-role">Research / Teaching Assistant (MHRD Fellowship)</div>
+        <div class="tl-org">Dept. of ECE, SMVDU, Katra</div>
+        <div class="tl-desc">Designed energy-efficient relay-assisted architecture for 5G networks. Results published in IEEE Access (2016) and Telecommunication Systems (2018).</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="awards">
+  <div class="section-inner">
+    <div class="section-label">// 05 · Recognition</div>
+    <h2>Awards & Fellowships</h2>
+    <div class="divider"></div>
+    <div class="awards-grid reveal">
+      <div class="award-card"><div class="award-year">2024</div><div class="award-title">SIT Student Developer Award</div><div class="award-body">Singapore Institute of Technology</div></div>
+      <div class="award-card"><div class="award-year">2021</div><div class="award-title">Sydney R. Parker Best Paper Award</div><div class="award-body">Circuits, Systems & Signal Processing, Springer</div></div>
+      <div class="award-card"><div class="award-year">2021</div><div class="award-title">M.N.S. Swamy Best Paper Award</div><div class="award-body">Best Paper in CSSP 2020–2021, Springer</div></div>
+      <div class="award-card"><div class="award-year">2019–2022</div><div class="award-title">UGC Research Fellowship</div><div class="award-body">University Grants Commission, India</div></div>
+      <div class="award-card"><div class="award-year">2014–2016</div><div class="award-title">MHRD Teaching & Research Fellowship</div><div class="award-body">Ministry of Human Resource Development, India</div></div>
+      <div class="award-card"><div class="award-year">2014</div><div class="award-title">GATE & NET Qualified</div><div class="award-body">Graduate Aptitude Test · National Eligibility Test</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="section-inner">
+    <div class="contact-inner">
+      <div class="section-label">// 06 · Connect</div>
+      <h2>Open to Faculty Opportunities</h2>
+      <div class="divider" style="margin:1rem auto 2rem;"></div>
+      <p class="contact-tagline reveal">Actively seeking tenure-track faculty positions at research-intensive universities. If you are a recruitment committee, prospective student, or research collaborator — I would be glad to hear from you.</p>
+      <div class="contact-grid reveal">
+        <a href="mailto:akshita.abrol@singaporetech.edu.sg" class="contact-item"><span class="ic">✉</span> akshita.abrol@singaporetech.edu.sg</a>
+        <a href="mailto:akshita.abrol30@gmail.com" class="contact-item"><span class="ic">✉</span> akshita.abrol30@gmail.com</a>
+        <a href="https://www.linkedin.com/in/dr-akshita-abrol-7ba8ba206/" target="_blank" class="contact-item"><span class="ic">in</span> LinkedIn</a>
+        <a href="https://scholar.google.com/citations?user=pGAcvDwAAAAJ" target="_blank" class="contact-item"><span class="ic">↗</span> Google Scholar</a>
+        <a href="tel:+6586723185" class="contact-item"><span class="ic">📞</span> +65-8672 3185</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Akshita Abrol, PhD &nbsp;·&nbsp; Applied AI Researcher &nbsp;·&nbsp; Singapore Institute of Technology</p>
+</footer>
+
+<script>
+// ── MULTIMODAL AI PIPELINE ANIMATION ──
+(function() {
+  const canvas = document.getElementById('pipeCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H;
+
+  function resize() {
+    W = canvas.offsetWidth;
+    H = 200;
+    canvas.width = W;
+    canvas.height = H;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const CYAN = '#00E5FF';
+  const TEAL = '#0AFFB2';
+  const WHITE = '#F0F4FF';
+  const NAVY = '#050B18';
+  const NAVYMID = '#0D1B30';
+
+  const inputs = [
+    { label: 'Speech',     icon: '🎤', color: '#00E5FF' },
+    { label: 'Vision',     icon: '👁',  color: '#0AFFB2' },
+    { label: 'Text',       icon: '📄', color: '#7B9EFF' },
+    { label: 'EHR',        icon: '🏥', color: '#FF9F7B' },
+    { label: 'Edge Intel', icon: '⚡', color: '#FFD166' },
+  ];
+
+  const outputNodes = [
+    { label: 'Diag. Support', icon: '🧠', color: '#0AFFB2' },
+    { label: 'Report',        icon: '📋', color: '#00E5FF' },
+  ];
+
+  // Neural network layers inside AI core: [3 input nodes, 4 hidden nodes, 3 hidden nodes, 2 output nodes]
+  const nnLayers = [3, 4, 3, 2];
+  let nnPulse = 0; // 0..nnLayers.length-1, which layer is currently lit
+  let nnPulseT = 0; // timer
+
+  let t = 0;
+  let particles = [];
+
+  function bezierPt(t0, sx, sy, c1x, c1y, c2x, c2y, ex, ey) {
+    const mt = 1 - t0;
+    return {
+      x: mt*mt*mt*sx + 3*mt*mt*t0*c1x + 3*mt*t0*t0*c2x + t0*t0*t0*ex,
+      y: mt*mt*mt*sy + 3*mt*mt*t0*c1y + 3*mt*t0*t0*c2y + t0*t0*t0*ey
+    };
+  }
+
+  function hexToRgb(hex) {
+    const r = parseInt(hex.slice(1,3),16);
+    const g = parseInt(hex.slice(3,5),16);
+    const b = parseInt(hex.slice(5,7),16);
+    return `${r},${g},${b}`;
+  }
+
+  function drawNeuralNet(cx, cy, radius) {
+    // Draw a small layered neural net inside the AI core circle
+    const layerCount = nnLayers.length;
+    const netW = radius * 1.5;
+    const netH = radius * 1.6;
+    const startX = cx - netW / 2;
+    const layerXs = nnLayers.map((_, i) => startX + (i / (layerCount - 1)) * netW);
+
+    // Precompute node positions
+    const nodePositions = nnLayers.map((count, li) => {
+      const lx = layerXs[li];
+      return Array.from({length: count}, (_, ni) => ({
+        x: lx,
+        y: cy - netH/2 + (ni + 0.5) * (netH / count)
+      }));
+    });
+
+    // Draw edges
+    for (let li = 0; li < layerCount - 1; li++) {
+      const fromNodes = nodePositions[li];
+      const toNodes = nodePositions[li + 1];
+      const isActive = (nnPulse === li);
+      const nextActive = (nnPulse === li + 1);
+      fromNodes.forEach(fn => {
+        toNodes.forEach(tn => {
+          ctx.beginPath();
+          ctx.moveTo(fn.x, fn.y);
+          ctx.lineTo(tn.x, tn.y);
+          if (isActive || nextActive) {
+            const alpha = isActive ? 0.55 : 0.3;
+            ctx.strokeStyle = `rgba(0,229,255,${alpha})`;
+            ctx.lineWidth = 0.7;
+          } else {
+            ctx.strokeStyle = 'rgba(0,229,255,0.12)';
+            ctx.lineWidth = 0.5;
+          }
+          ctx.stroke();
+        });
+      });
+    }
+
+    // Draw nodes
+    nodePositions.forEach((layer, li) => {
+      const isLit = (nnPulse === li);
+      layer.forEach(node => {
+        // Node glow
+        if (isLit) {
+          ctx.beginPath();
+          ctx.arc(node.x, node.y, 5, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(0,229,255,0.2)';
+          ctx.fill();
+        }
+        // Node circle
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, 3, 0, Math.PI * 2);
+        ctx.fillStyle = isLit ? CYAN : 'rgba(0,229,255,0.35)';
+        ctx.fill();
+        if (isLit) {
+          ctx.strokeStyle = CYAN;
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+        }
+      });
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = NAVYMID;
+    ctx.fillRect(0, 0, W, H);
+
+    const inX = W * 0.13;
+    const cx = W * 0.50;
+    const outX = W * 0.87;
+    const nodeR = 26;
+    const smallR = 19;
+    const inputYs = inputs.map((_, i) => H * (0.09 + i * 0.205));
+    const outputYs = outputNodes.map((_, i) => H * (0.28 + i * 0.44));
+
+    // Connector lines: inputs → center (bezier curves)
+    inputs.forEach((inp, i) => {
+      const iy = inputYs[i];
+      ctx.beginPath();
+      ctx.moveTo(inX + nodeR, iy);
+      ctx.bezierCurveTo(inX + 70, iy, cx - 70, H/2, cx - nodeR, H/2);
+      ctx.strokeStyle = `rgba(${hexToRgb(inp.color)},0.15)`;
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    });
+
+    // Connector lines: center → outputs
+    outputNodes.forEach((out, i) => {
+      const oy = outputYs[i];
+      ctx.beginPath();
+      ctx.moveTo(cx + nodeR, H/2);
+      ctx.bezierCurveTo(cx + 60, H/2, outX - 60, oy, outX - smallR, oy);
+      ctx.strokeStyle = 'rgba(0,229,255,0.18)';
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+    });
+
+    // Input nodes
+    inputs.forEach((inp, i) => {
+      const iy = inputYs[i];
+      ctx.beginPath();
+      ctx.arc(inX, iy, nodeR, 0, Math.PI * 2);
+      ctx.fillStyle = NAVYMID;
+      ctx.fill();
+      ctx.strokeStyle = inp.color;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.font = '13px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillStyle = WHITE;
+      ctx.fillText(inp.icon, inX, iy + 5);
+      ctx.font = '6.5px "Space Mono", monospace';
+      ctx.fillStyle = inp.color;
+      ctx.fillText(inp.label, inX, iy + nodeR + 11);
+    });
+
+    // ── AI CORE NODE with Neural Network ──
+    // Outer pulse rings
+    const p1 = 1 + 0.08 * Math.sin(t * 0.04);
+    const p2 = 1 + 0.05 * Math.sin(t * 0.04 + 1.8);
+    ctx.beginPath();
+    ctx.arc(cx, H/2, (nodeR + 12) * p1, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(0,229,255,0.10)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(cx, H/2, (nodeR + 20) * p2, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(10,255,178,0.05)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    // Core circle background
+    ctx.beginPath();
+    ctx.arc(cx, H/2, nodeR, 0, Math.PI * 2);
+    ctx.fillStyle = '#081525';
+    ctx.fill();
+    ctx.strokeStyle = CYAN;
+    ctx.lineWidth = 1.8;
+    ctx.stroke();
+
+    // Clip to circle before drawing neural net
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx, H/2, nodeR - 2, 0, Math.PI * 2);
+    ctx.clip();
+    drawNeuralNet(cx, H/2, nodeR - 2);
+    ctx.restore();
+
+    // Label below
+    ctx.font = '6px "Space Mono", monospace';
+    ctx.fillStyle = CYAN;
+    ctx.textAlign = 'center';
+    ctx.fillText('GNN CORE', cx, H/2 + nodeR + 11);
+
+    // Output nodes
+    outputNodes.forEach((out, i) => {
+      const oy = outputYs[i];
+      ctx.beginPath();
+      ctx.arc(outX, oy, smallR, 0, Math.PI * 2);
+      ctx.fillStyle = NAVYMID;
+      ctx.fill();
+      ctx.strokeStyle = out.color;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.font = '11px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillStyle = WHITE;
+      ctx.fillText(out.icon, outX, oy + 4);
+      ctx.font = '6px "Space Mono", monospace';
+      ctx.fillStyle = out.color;
+      ctx.fillText(out.label, outX, oy + smallR + 10);
+    });
+
+    // Particles along bezier paths
+    particles.forEach((par, idx) => {
+      par.p += par.speed;
+      let pt;
+      if (par.toCenter) {
+        pt = bezierPt(par.p, par.sx, par.sy, par.sx+70, par.sy, cx-70, H/2, cx-nodeR, H/2);
+      } else {
+        pt = bezierPt(par.p, par.sx, par.sy, par.sx+60, par.sy, outX-60, par.ey, outX-smallR, par.ey);
+      }
+      ctx.beginPath();
+      ctx.arc(pt.x, pt.y, 2.5, 0, Math.PI * 2);
+      ctx.fillStyle = par.color;
+      ctx.globalAlpha = Math.max(0, 1 - par.p * 0.5);
+      ctx.fill();
+      ctx.globalAlpha = 1;
+      if (par.p >= 1) particles.splice(idx, 1);
+    });
+
+    // Spawn input→center particles
+    inputs.forEach((inp, i) => {
+      if ((t + i * 18) % 72 === 0) {
+        particles.push({ sx: inX+nodeR, sy: inputYs[i], ex: cx-nodeR, ey: H/2, color: inp.color, p: 0, speed: 0.013 + Math.random()*0.008, toCenter: true });
+      }
+    });
+    // Spawn center→output particles
+    outputNodes.forEach((out, i) => {
+      if ((t + 10 + i * 36) % 72 === 0) {
+        particles.push({ sx: cx+nodeR, sy: H/2, ex: outX-smallR, ey: outputYs[i], color: out.color, p: 0, speed: 0.013 + Math.random()*0.008, toCenter: false });
+      }
+    });
+
+    // Advance neural net forward pass pulse
+    nnPulseT++;
+    if (nnPulseT > 28) {
+      nnPulseT = 0;
+      nnPulse = (nnPulse + 1) % nnLayers.length;
+    }
+
+    t++;
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ── SCROLL REVEAL ──
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
